@@ -12,6 +12,15 @@
       "cwd": "${workspaceFolder}",
       "program": "${workspaceFolder}",
       "args": ["scan", "scanme.nmap.org"]
+    },
+    {
+      "name": "Launch Echo Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}",
+      "args": ["echo"]
     }
   ]
 }
