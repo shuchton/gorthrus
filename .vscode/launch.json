@@ -21,6 +21,24 @@
       "cwd": "${workspaceFolder}",
       "program": "${workspaceFolder}",
       "args": ["echo"]
+    },
+    {
+      "name": "Launch Proxy Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}",
+      "args": ["proxy"]
+    },
+    {
+      "name": "Launch Execute Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}",
+      "args": ["execute"]
     }
   ]
 }

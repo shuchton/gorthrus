@@ -22,15 +22,13 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
-
-	scan "github.com/shuchton/gorthrus/app/scan"
+	"github.com/shuchton/gorthrus/app/proxy"
 	"github.com/spf13/cobra"
 )
 
-// scanCmd represents the scan command
-var scanCmd = &cobra.Command{
-	Use:   "scan",
+// proxyCmd represents the proxy command
+var proxyCmd = &cobra.Command{
+	Use:   "proxy",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -39,38 +37,28 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		network, _ := cmd.Flags().GetString("network")
-		site := args[0]
-		ports, _ := cmd.Flags().GetString("ports")
-
-		openports, err := scan.Scanner(network, site, ports)
-		if err != nil {
-			panic(err)
-		}
-		for _, port := range openports {
-			fmt.Printf("%d open\n", port)
-		}
-
+		target, _ := cmd.Flags().GetString("target")
+		listenPort, _ := cmd.Flags().GetInt("listen-port")
+		targetPort, _ := cmd.Flags().GetInt("target-port")
+		proxy.Server(listenPort, target, targetPort)
 	},
-	Args: cobra.MinimumNArgs(1),
 }
 
 func init() {
-	rootCmd.AddCommand(scanCmd)
+	rootCmd.AddCommand(proxyCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// scanCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// proxyCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// scanCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
-	scanCmd.Flags().StringP("network", "n", "tcp", "The network to scan (i.e. \"tcp\" or  \"udp\")")
-	scanCmd.Flags().StringP("ports", "p", "1-1024", "The port or range to scan (i.e. \"22,80,443,1-1024\")")
-
-	// scanCmd.SetUsageTemplate("this is how you use it")
+	// proxyCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	proxyCmd.Flags().StringP("target", "t", "", "The site to forward traffic to")
+	proxyCmd.MarkFlagRequired("target")
+	proxyCmd.Flags().IntP("listen-port", "l", 80, "The local port to listen on")
+	proxyCmd.Flags().IntP("target-port", "p", 80, "The port on the target site")
 
 }
